@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
+
 import com.wuman.android.auth.OAuthManager;
 
 import tw.edu.ncu.cc.course.client.android.NCUCourseClient;
@@ -41,6 +44,8 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
 
+    private CookieManager cookieManager;
+
     private boolean auth = false;
 
     public static NCUCourseClient ncuCourseClient;
@@ -49,10 +54,13 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        CookieSyncManager.createInstance(this);
+        cookieManager = CookieManager.getInstance();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
+
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(
@@ -82,7 +90,7 @@ public class MainActivity extends ActionBarActivity
             builder.show();
         }
         else {
-            CourseConfig courseConfig = new CourseConfig("https://appstore.cc.ncu.edu.tw/course/");
+            CourseConfig courseConfig = new CourseConfig("https://appstore.cc.ncu.edu.tw/course/", getString(R.string.language));
             AndroidOauthBuilder oauthBuilder = AndroidOauthBuilder.initContext(this)
                     .clientID(getString(R.string.oauth_id))
                     .clientSecret(getString(R.string.oauth_secret))
@@ -104,7 +112,7 @@ public class MainActivity extends ActionBarActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         if (position == 0) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.container, ScheduleFragment.newInstance(position + 1))
+                    .replace(R.id.container, ScheduleFragment.newInstance(this))
                     .commit();
         }
         else {
@@ -124,7 +132,6 @@ public class MainActivity extends ActionBarActivity
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
@@ -165,7 +172,6 @@ public class MainActivity extends ActionBarActivity
 
         @Override
         protected Void doInBackground(Void... params) {
-            CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setCookie("portal.ncu.edu.tw", "JSESSIONID=");
             try {
                 ncuCourseClient.initAccessToken();

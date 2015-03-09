@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">中大我的課表</string>
-    <string name="title_my_course">我的課表</string>
-    <string name="title_version">版本 0.0.3</string>
+    <string name="app_name">NCU Course</string>
+    <string name="title_my_course">My Course</string>
+    <string name="title_version">Version 0.0.4</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_logout">登出</string>
-    <string name="action_settings">設定</string>
-    <string name="cancel">取消</string>
-    <string name="title_monday">週一</string>
-    <string name="title_tuesday">週二</string>
-    <string name="title_wednesday">週三</string>
-    <string name="title_thursday">週四</string>
-    <string name="title_friday">週五</string>
-    <string name="title_saturday">週六</string>
-    <string name="title_sunday">週日</string>
-    <string name="title_activity_course">課程內容</string>
-    <string name="no_class_no">課號-班別</string>
-    <string name="class_name">課程名稱</string>
-    <string name="teachers">授課教師</string>
-    <string name="time_classroom">時間/教室</string>
-    <string name="type">選修別</string>
-    <string name="credit">學分</string>
-    <string name="full_half">全/半</string>
-    <string name="language">授課語言</string>
-    <string name="password_card">採用密碼卡</string>
-    <string name="max_students">人數限制</string>
-    <string name="memo">備註</string>
-    <string name="network_unreachable">無法連線</string>
-    <string name="open_network_message">您必須要有網路連線，才能使用中大地圖，請至設定中開啟行動網路或是Wi-Fi。</string>
-    <string name="network_settings">設定</string>
+    <string name="language">en-US</string>
+    <string name="action_logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="title_monday">Monday</string>
+    <string name="title_tuesday">Tuesday</string>
+    <string name="title_wednesday">Wednesday</string>
+    <string name="title_thursday">Thursday</string>
+    <string name="title_friday">Friday</string>
+    <string name="title_saturday">Saturday</string>
+    <string name="title_sunday">Sunday</string>
+    <string name="title_activity_course">Course</string>
+    <string name="code_class">Serial Number Course Code - Class</string>
+    <string name="course_name">Course Name</string>
+    <string name="teachers">Instructors</string>
+    <string name="time_classroom">Time/Building - Room Number</string>
+    <string name="type">Required or Elective</string>
+    <string name="credit">Credit</string>
+    <string name="full_half">Whole Year/Semester</string>
+    <string name="course_language">Language</string>
+    <string name="password_card">Password Card</string>
+    <string name="max_students">Maximum Students</string>
+    <string name="memo">Remark</string>
+    <string name="network_unreachable">Network is unreachable.</string>
+    <string name="open_network_message">To use NCU Course, internet connection is required. Please go to settings and turn mobile networks or Wi-Fi on.</string>
+    <string name="network_settings">Settings</string>
+    <string name="loading_schedule">Loading Schedule…</string>
 
 </resources>

@@ -4,6 +4,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:id="@+id/scroll_view"
     tools:context="tw.edu.ncu.cc.course.CourseActivity">
 <RelativeLayout
     android:layout_width="match_parent"
@@ -16,15 +17,15 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:text="@string/no_class_no"
-        android:id="@+id/no_class_no_label" />
+        android:text="@string/code_class"
+        android:id="@+id/code_class_label" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/class_name"
-        android:id="@+id/class_name_label"
-        android:layout_below="@+id/no_class_no"
+        android:text="@string/course_name"
+        android:id="@+id/course_name_label"
+        android:layout_below="@+id/code_class"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -33,7 +34,7 @@
         android:layout_height="wrap_content"
         android:text="@string/teachers"
         android:id="@+id/teachers_label"
-        android:layout_below="@+id/class_name"
+        android:layout_below="@+id/course_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -76,7 +77,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/language"
+        android:text="@string/course_language"
         android:id="@+id/language_label"
         android:layout_below="@+id/full_half"
         android:layout_alignParentLeft="true"
@@ -112,24 +113,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/no_class_no"
+        android:id="@+id/code_class"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/password_card_label"
-        android:layout_toEndOf="@+id/password_card_label"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_below="@+id/code_class_label"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/class_name"
+        android:id="@+id/course_name"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_below="@+id/no_class_no"
-        android:layout_alignLeft="@+id/no_class_no"
-        android:layout_alignStart="@+id/no_class_no"
+        android:layout_below="@+id/course_name_label"
+        android:layout_alignLeft="@+id/code_class"
+        android:layout_alignStart="@+id/code_class"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -138,9 +139,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/teachers"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_below="@+id/class_name"
-        android:layout_alignLeft="@+id/no_class_no"
-        android:layout_alignStart="@+id/no_class_no"
+        android:layout_below="@+id/teachers_label"
+        android:layout_alignLeft="@+id/code_class"
+        android:layout_alignStart="@+id/code_class"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -149,9 +150,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/time_classroom"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_below="@+id/teachers"
-        android:layout_alignLeft="@+id/no_class_no"
-        android:layout_alignStart="@+id/no_class_no"
+        android:layout_below="@+id/time_classroom_label"
+        android:layout_alignLeft="@+id/code_class"
+        android:layout_alignStart="@+id/code_class"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -160,9 +161,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/type"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_below="@+id/time_classroom"
-        android:layout_alignLeft="@+id/no_class_no"
-        android:layout_alignStart="@+id/no_class_no"
+        android:layout_below="@+id/type_label"
+        android:layout_alignLeft="@+id/code_class"
+        android:layout_alignStart="@+id/code_class"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -171,9 +172,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/credit"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_below="@+id/type"
-        android:layout_alignLeft="@+id/no_class_no"
-        android:layout_alignStart="@+id/no_class_no"
+        android:layout_below="@+id/credit_label"
+        android:layout_alignLeft="@+id/code_class"
+        android:layout_alignStart="@+id/code_class"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -182,9 +183,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/full_half"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_below="@+id/credit"
-        android:layout_alignLeft="@+id/no_class_no"
-        android:layout_alignStart="@+id/no_class_no"
+        android:layout_below="@+id/full_half_label"
+        android:layout_alignLeft="@+id/code_class"
+        android:layout_alignStart="@+id/code_class"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -193,9 +194,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/language"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_below="@+id/full_half"
-        android:layout_alignLeft="@+id/no_class_no"
-        android:layout_alignStart="@+id/no_class_no"
+        android:layout_below="@+id/language_label"
+        android:layout_alignLeft="@+id/code_class"
+        android:layout_alignStart="@+id/code_class"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -204,20 +205,20 @@
         android:layout_height="wrap_content"
         android:id="@+id/password_card"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_below="@+id/language"
-        android:layout_alignLeft="@+id/no_class_no"
-        android:layout_alignStart="@+id/no_class_no"
-        android:layout_alignRight="@+id/language"
-        android:layout_alignEnd="@+id/language" />
+        android:layout_below="@+id/password_card_label"
+        android:layout_alignLeft="@+id/code_class"
+        android:layout_alignStart="@+id/code_class"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/max_students"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_below="@+id/password_card"
-        android:layout_alignLeft="@+id/no_class_no"
-        android:layout_alignStart="@+id/no_class_no"
+        android:layout_below="@+id/max_students_label"
+        android:layout_alignLeft="@+id/code_class"
+        android:layout_alignStart="@+id/code_class"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -226,9 +227,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/memo"
         android:textAppearance="?android:textAppearanceLarge"
-        android:layout_below="@+id/max_students"
-        android:layout_alignLeft="@+id/no_class_no"
-        android:layout_alignStart="@+id/no_class_no"
+        android:layout_below="@+id/memo_label"
+        android:layout_alignLeft="@+id/code_class"
+        android:layout_alignStart="@+id/code_class"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 

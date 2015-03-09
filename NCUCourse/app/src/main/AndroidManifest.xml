@@ -22,7 +22,7 @@
         </activity>
         <activity
             android:name=".CourseActivity"
-            android:label="@string/title_activity_course" >
+            android:label="@string/title_activity_course">
         </activity>
     </application>
 

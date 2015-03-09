@@ -22,10 +22,12 @@ public class NCUCourseClient {
     private OAuthManager oauthManager;
     private RequestQueue queue;
     private String baseURL;
+    private String language;
     private String token;
 
     public NCUCourseClient( CourseConfig config, OAuthManager oauthManager, Context context ) {
         this.baseURL = config.getServerAddress();
+        this.language = config.getLanguage();
         this.queue = Volley.newRequestQueue( context );
         this.oauthManager = oauthManager;
     }
@@ -73,6 +75,7 @@ public class NCUCourseClient {
             public Map< String, String > getHeaders() throws AuthFailureError {
                 Map< String, String > headers = new HashMap<>();
                 headers.put( "Authorization", "Bearer " + token );
+                headers.put( "Accept-Language", language);
                 return headers;
             }
         } );
