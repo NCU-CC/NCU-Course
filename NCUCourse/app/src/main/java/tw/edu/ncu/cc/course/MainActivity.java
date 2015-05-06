@@ -90,7 +90,7 @@ public class MainActivity extends ActionBarActivity
             builder.show();
         }
         else {
-            CourseConfig courseConfig = new CourseConfig("https://appstore.cc.ncu.edu.tw/course/", getString(R.string.language));
+            CourseConfig courseConfig = new CourseConfig("https://api.cc.ncu.edu.tw/course/", getString(R.string.language));
             AndroidOauthBuilder oauthBuilder = AndroidOauthBuilder.initContext(this)
                     .clientID(getString(R.string.oauth_id))
                     .clientSecret(getString(R.string.oauth_secret))

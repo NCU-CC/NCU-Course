@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
 
     <string name="app_name">NCU Course</string>
     <string name="title_my_course">My Course</string>
-    <string name="title_version">Version 0.0.4</string>
+    <string name="title_version">Version 0.0.5</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="language">en-US</string>

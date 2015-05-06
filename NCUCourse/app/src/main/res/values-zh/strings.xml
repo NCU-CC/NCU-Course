@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation">
 
     <string name="app_name">中大我的課表</string>
     <string name="title_my_course">我的課表</string>
+    <string name="title_version">版本 0.0.5</string>
     <string name="action_logout">登出</string>
     <string name="cancel">取消</string>
     <string name="language">zh-TW</string>
