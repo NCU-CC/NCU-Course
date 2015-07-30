@@ -42,7 +42,6 @@ public class ScheduleFragment extends Fragment {
     private NCUCourseClient ncuCourseClient;
     private List<List<List<Course>>> courses;
     private ProgressDialog progressDialog;
-    private int leftCount = 2;
     private static final String selectedColor = "#003d79";
     private static final String trackingColor = "#FF8070";
     public static Course course;
@@ -82,28 +81,25 @@ public class ScheduleFragment extends Fragment {
                             courses.get(Integer.parseInt(day) - 1).get(hour - 1).add(course);
                         }
                 }
-                showSchedule();
-            }
 
-            @Override
-            public void onError(Throwable throwable) {
-                fail();
-            }
-        });
+                ncuCourseClient.getTrackingCourse(new ResponseListener<Course[]>() {
+                    @Override
+                    public void onResponse(Course[] responses) {
+                        for (Course course : responses) {
+                            Map<String, Integer[]> times = course.getTimes();
+                            course.setIsSelected(false);
+                            for (String day : times.keySet())
+                                for (Integer hour : times.get(day))
+                                    courses.get(Integer.parseInt(day) - 1).get(hour - 1).add(course);
+                        }
+                        showSchedule();
+                    }
 
-
-        ncuCourseClient.getTrackingCourse(new ResponseListener<Course[]>() {
-            @Override
-            public void onResponse(Course[] responses) {
-                for (Course course : responses) {
-                    Map<String, Integer[]> times = course.getTimes();
-                    course.setIsSelected(false);
-                    for (String day : times.keySet())
-                        for (Integer hour : times.get(day))
-                            courses.get(Integer.parseInt(day) - 1).get(hour - 1).add(course);
-                }
-                if (mViewPager != null)
-                    mViewPager.setAdapter(mSectionsPagerAdapter);
+                    @Override
+                    public void onError(Throwable throwable) {
+                        fail();
+                    }
+                });
             }
 
             @Override
@@ -149,7 +145,6 @@ public class ScheduleFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_refresh) {
             progressDialog.show();
-            leftCount = 1;
             getCourses();
             return true;
         }
@@ -157,18 +152,12 @@ public class ScheduleFragment extends Fragment {
     }
 
     private void showSchedule() {
-        leftCount--;
-        if (leftCount == 0) {
-            mViewPager.setAdapter(mSectionsPagerAdapter);
-            progressDialog.dismiss();
-        }
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        progressDialog.dismiss();
     }
 
     private void fail() {
-        if (leftCount <= 0)
-            return;
         progressDialog.dismiss();
-        leftCount = -1;
         Toast.makeText(getActivity(), R.string.loading_failed , Toast.LENGTH_SHORT).show();
     }
 
