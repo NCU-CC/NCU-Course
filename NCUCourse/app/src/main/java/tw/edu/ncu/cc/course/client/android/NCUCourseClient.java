@@ -1,6 +1,7 @@
 package tw.edu.ncu.cc.course.client.android;
 
 import android.content.Context;
+
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -14,8 +15,6 @@ import tw.edu.ncu.cc.course.data.v1.Course;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-// REQUIRE CLASS_READ SCOPE
 
 public class NCUCourseClient {
 
@@ -34,7 +33,7 @@ public class NCUCourseClient {
 
     public void initAccessToken() {
         try {
-            this.token = oauthManager.authorizeExplicitly( "user", null, null ).getResult().getAccessToken();
+            token = oauthManager.authorizeExplicitly( "user", null, null ).getResult().getAccessToken();
         } catch ( IOException e ) {
             throw new RuntimeException( e );
         }
@@ -46,13 +45,13 @@ public class NCUCourseClient {
 
     public void getSelectedCourse( ResponseListener< Course[] > responseListener ) {
         get(
-                "api/v1/student/selected", responseListener, new TypeToken< Course[] >(){}
+                "student/selected", responseListener, new TypeToken< Course[] >(){}
         );
     }
 
     public void getTrackingCourse( ResponseListener< Course[] > responseListener ) {
         get(
-                "api/v1/student/tracking", responseListener, new TypeToken< Course[] >(){}
+                "student/tracking", responseListener, new TypeToken< Course[] >(){}
         );
     }
 

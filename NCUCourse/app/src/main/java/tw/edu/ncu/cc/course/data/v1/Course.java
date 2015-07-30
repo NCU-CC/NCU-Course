@@ -17,6 +17,7 @@ public class Course {
     private boolean isClosed;
     private boolean isFirstRun;
     private boolean isPreSelect;
+    private boolean isSelected;
     private String type;
     private String fullHalf;
     private String passwordCard;
@@ -126,6 +127,14 @@ public class Course {
 
     public void setIsPreSelect( boolean isPreSelect ) {
         this.isPreSelect = isPreSelect;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
     }
 
     public String getType() {

@@ -5,7 +5,7 @@
 
     <string name="app_name">NCU Course</string>
     <string name="title_my_course">My Course</string>
-    <string name="title_version">Version 0.0.5</string>
+    <string name="title_version">Version 0.5</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="language">en-US</string>
@@ -34,5 +34,6 @@
     <string name="open_network_message">To use NCU Course, internet connection is required. Please go to settings and turn mobile networks or Wi-Fi on.</string>
     <string name="network_settings">Settings</string>
     <string name="loading_schedule">Loading Schedule…</string>
+    <string name="loading_failed">Loading Failed.</string>
 
 </resources>

@@ -9,8 +9,8 @@ android {
         applicationId "tw.edu.ncu.cc.ncucourse"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 5
-        versionName "0.0.5"
+        versionCode 6
+        versionName "0.5"
     }
     buildTypes {
         release {
@@ -27,7 +27,7 @@ dependencies {
     compile('com.wu-man:android-oauth-client:0.0.3') {
         exclude module: 'support-v4'
     }
-    compile 'com.mcxiaoke.volley:library:1.0.9'
+    compile 'com.mcxiaoke.volley:library:1.0.18'
     compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.android.support:appcompat-v7:22.2.1'
 }

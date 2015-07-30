@@ -12,7 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,8 +21,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,8 @@ public class ScheduleFragment extends Fragment {
     private List<List<List<Course>>> courses;
     private ProgressDialog progressDialog;
     private int leftCount = 2;
+    private static final String selectedColor = "#003d79";
+    private static final String trackingColor = "#FF8070";
     public static Course course;
 
     public static ScheduleFragment newInstance(Context context) {
@@ -72,25 +76,28 @@ public class ScheduleFragment extends Fragment {
             public void onResponse(Course[] responses) {
                 for (Course course : responses) {
                     Map<String, Integer[]> times = course.getTimes();
+                    course.setIsSelected(true);
                     for (String day : times.keySet())
-                        for (Integer hour : times.get(day))
+                        for (Integer hour : times.get(day)) {
                             courses.get(Integer.parseInt(day) - 1).get(hour - 1).add(course);
+                        }
                 }
                 showSchedule();
             }
 
             @Override
             public void onError(Throwable throwable) {
-
+                fail();
             }
         });
 
-        /*
+
         ncuCourseClient.getTrackingCourse(new ResponseListener<Course[]>() {
             @Override
             public void onResponse(Course[] responses) {
                 for (Course course : responses) {
                     Map<String, Integer[]> times = course.getTimes();
+                    course.setIsSelected(false);
                     for (String day : times.keySet())
                         for (Integer hour : times.get(day))
                             courses.get(Integer.parseInt(day) - 1).get(hour - 1).add(course);
@@ -101,9 +108,9 @@ public class ScheduleFragment extends Fragment {
 
             @Override
             public void onError(Throwable throwable) {
-
+                fail();
             }
-        });*/
+        });
     }
 
     @Override
@@ -155,6 +162,14 @@ public class ScheduleFragment extends Fragment {
             mViewPager.setAdapter(mSectionsPagerAdapter);
             progressDialog.dismiss();
         }
+    }
+
+    private void fail() {
+        if (leftCount <= 0)
+            return;
+        progressDialog.dismiss();
+        leftCount = -1;
+        Toast.makeText(getActivity(), R.string.loading_failed , Toast.LENGTH_SHORT).show();
     }
 
     public void setProgressDialog(ProgressDialog progressDialog) {
@@ -247,9 +262,9 @@ public class ScheduleFragment extends Fragment {
             for (int i = 0; i != 16; ++i) {
                 List<Course> hourCourses = dayCourses.get(i);
                 for (Course course : hourCourses)
-                    daySchedule[i] += " " + course.getName();
+                    daySchedule[i] += "&nbsp;<font color=\"" + ( course.isSelected() ? selectedColor : trackingColor ) + "\">" + course.getName() + "</font>";
             }
-            listView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, daySchedule));
+            listView.setAdapter(new ListAdapter(getActivity(), daySchedule));
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -283,6 +298,41 @@ public class ScheduleFragment extends Fragment {
                 }
             });
             builder.show();
+        }
+
+        private static class ListAdapter extends BaseAdapter {
+
+            private Context context;
+            private String[] items;
+
+            public ListAdapter(Context context, String[] items) {
+                this.context = context;
+                this.items = items;
+            }
+
+            @Override
+            public int getCount() {
+                return items.length;
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return 0;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    convertView = LayoutInflater.from(context).inflate(R.layout.course_list_item, parent, false);
+                }
+                ((TextView) convertView).setText(Html.fromHtml(items[position]));
+                return convertView;
+            }
         }
     }
 

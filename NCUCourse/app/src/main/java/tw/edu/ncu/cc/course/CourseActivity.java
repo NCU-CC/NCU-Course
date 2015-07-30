@@ -1,7 +1,7 @@
 package tw.edu.ncu.cc.course;
 
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import tw.edu.ncu.cc.course.data.v1.Course;
 
-public class CourseActivity extends ActionBarActivity {
+public class CourseActivity extends AppCompatActivity {
 
     private String[] dayFW ;
     private final String[] hourFW = {

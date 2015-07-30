@@ -1,6 +1,5 @@
 package tw.edu.ncu.cc.course;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,17 +8,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.provider.Settings;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -31,7 +25,7 @@ import tw.edu.ncu.cc.course.client.tool.config.CourseConfig;
 import tw.edu.ncu.cc.oauth.client.android.AndroidOauthBuilder;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     /**
@@ -90,12 +84,12 @@ public class MainActivity extends ActionBarActivity
             builder.show();
         }
         else {
-            CourseConfig courseConfig = new CourseConfig("https://api.cc.ncu.edu.tw/course/", getString(R.string.language));
+            CourseConfig courseConfig = new CourseConfig("https://api.cc.ncu.edu.tw/course/v1/", getString(R.string.language));
             AndroidOauthBuilder oauthBuilder = AndroidOauthBuilder.initContext(this)
                     .clientID(getString(R.string.oauth_id))
                     .clientSecret(getString(R.string.oauth_secret))
                     .callback(getString(R.string.callback))
-                    .scope("CLASS_READ")
+                    .scope("course.schedule.read")
                     .fragmentManager(getSupportFragmentManager());
             OAuthManager oAuthManager = oauthBuilder.build();
             ncuCourseClient = new NCUCourseClient(courseConfig, oAuthManager, this);
@@ -110,16 +104,9 @@ public class MainActivity extends ActionBarActivity
         if (!auth)
             return;
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (position == 0) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, ScheduleFragment.newInstance(this))
-                    .commit();
-        }
-        else {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                    .commit();
-        }
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, ScheduleFragment.newInstance(this))
+                .commit();
     }
 
     public void onSectionAttached(int number) {
@@ -185,46 +172,6 @@ public class MainActivity extends ActionBarActivity
         protected void onPostExecute(Void aVoid) {
             auth = true;
             mNavigationDrawerFragment.selectItem(0);
-        }
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_main, container, false);
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
 
