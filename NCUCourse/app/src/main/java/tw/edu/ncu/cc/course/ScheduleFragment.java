@@ -3,12 +3,12 @@ package tw.edu.ncu.cc.course;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
+import android.app.ProgressDialog
+        ;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -26,42 +26,36 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.devspark.progressfragment.ProgressFragment;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import tw.edu.ncu.cc.course.client.android.NCUCourseClient;
 import tw.edu.ncu.cc.course.client.tool.response.ResponseListener;
 import tw.edu.ncu.cc.course.data.v1.Course;
 
 
-public class ScheduleFragment extends Fragment {
+public class ScheduleFragment extends ProgressFragment {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private NCUCourseClient ncuCourseClient;
     private List<List<List<Course>>> courses;
-    private ProgressDialog progressDialog;
+    private Set<Integer> courseSet;
     private static final String selectedColor = "#003d79";
     private static final String trackingColor = "#FF8070";
-    public static Course course;
-
-    public static ScheduleFragment newInstance(Context context) {
-        ScheduleFragment fragment = new ScheduleFragment();
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        fragment.setProgressDialog(progressDialog);
-        progressDialog.setMessage(context.getString(R.string.loading_schedule));
-        progressDialog.show();
-        return fragment;
-    }
 
     public ScheduleFragment() {
         setHasOptionsMenu(true);
         ncuCourseClient = MainActivity.ncuCourseClient;
-        getCourses();
     }
 
     private void getCourses() {
+        setContentShown(false);
         courses = new ArrayList<>(7);
         for (int i = 0; i != 7; ++i) {
             courses.add(new ArrayList<List<Course>>(16));
@@ -70,10 +64,12 @@ public class ScheduleFragment extends Fragment {
                 dayCourses.add(new ArrayList<Course>());
         }
 
-        ncuCourseClient.getSelectedCourse(new ResponseListener<Course[]>() {
+        courseSet = new HashSet<>();
+        ncuCourseClient.getSelectedCourses(new ResponseListener<Course[]>() {
             @Override
             public void onResponse(Course[] responses) {
                 for (Course course : responses) {
+                    courseSet.add(course.getSerialNo());
                     Map<String, Integer[]> times = course.getTimes();
                     course.setIsSelected(true);
                     for (String day : times.keySet())
@@ -82,10 +78,12 @@ public class ScheduleFragment extends Fragment {
                         }
                 }
 
-                ncuCourseClient.getTrackingCourse(new ResponseListener<Course[]>() {
+                ncuCourseClient.getTrackingCourses(new ResponseListener<Course[]>() {
                     @Override
                     public void onResponse(Course[] responses) {
                         for (Course course : responses) {
+                            if (courseSet.contains(course.getSerialNo()))
+                                continue;
                             Map<String, Integer[]> times = course.getTimes();
                             course.setIsSelected(false);
                             for (String day : times.keySet())
@@ -115,19 +113,17 @@ public class ScheduleFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        setContentView(mViewPager);
+        getCourses();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager());
-
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) inflater.inflate(R.layout.fragment_schedule, container, false);
-
-        showSchedule();
-
-        return mViewPager;
+        return inflater.inflate(R.layout.fragment_progress, container, false);
     }
 
     @Override
@@ -144,7 +140,6 @@ public class ScheduleFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_refresh) {
-            progressDialog.show();
             getCourses();
             return true;
         }
@@ -152,17 +147,14 @@ public class ScheduleFragment extends Fragment {
     }
 
     private void showSchedule() {
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getActivity().getSupportFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        progressDialog.dismiss();
+        setContentShown(true);
     }
 
     private void fail() {
-        progressDialog.dismiss();
+        setContentShown(true);
         Toast.makeText(getActivity(), R.string.loading_failed , Toast.LENGTH_SHORT).show();
-    }
-
-    public void setProgressDialog(ProgressDialog progressDialog) {
-        this.progressDialog = progressDialog;
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -270,7 +262,7 @@ public class ScheduleFragment extends Fragment {
         }
 
         public void openCourse(Course course) {
-            ScheduleFragment.course = course;
+            CourseActivity.course = course;
             startActivity(new Intent(getActivity(), CourseActivity.class));
         }
 
@@ -282,7 +274,7 @@ public class ScheduleFragment extends Fragment {
             builder.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.select_dialog_item, courseNames), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ScheduleFragment.course = courses.get(which);
+                    CourseActivity.course = courses.get(which);
                     startActivity(new Intent(getActivity(), CourseActivity.class));
                 }
             });

@@ -1,20 +1,20 @@
 package tw.edu.ncu.cc.course;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.provider.Settings;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.support.v4.widget.DrawerLayout;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
@@ -22,6 +22,11 @@ import com.wuman.android.auth.OAuthManager;
 
 import tw.edu.ncu.cc.course.client.android.NCUCourseClient;
 import tw.edu.ncu.cc.course.client.tool.config.CourseConfig;
+import tw.edu.ncu.cc.course.client.tool.response.ResponseListener;
+import tw.edu.ncu.cc.course.data.v1.College;
+import tw.edu.ncu.cc.course.data.v1.Department;
+import tw.edu.ncu.cc.course.data.v1.Target;
+import tw.edu.ncu.cc.course.data.v1.Unit;
 import tw.edu.ncu.cc.oauth.client.android.AndroidOauthBuilder;
 
 
@@ -39,6 +44,8 @@ public class MainActivity extends AppCompatActivity
     private CharSequence mTitle;
 
     private CookieManager cookieManager;
+
+    private int position = 0;
 
     private boolean auth = false;
 
@@ -103,17 +110,143 @@ public class MainActivity extends AppCompatActivity
         // update the main content by replacing fragments
         if (!auth)
             return;
+        this.position = position;
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, ScheduleFragment.newInstance(this))
+        switch (position) {
+            case 0:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, new ScheduleFragment())
+                        .commit();
+                break;
+            case 1:
+                chooseCollege();
+                break;
+            case 2:
+                chooseCollege();
+                break;
+            case 3:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, CoursesFragment.newInstance(2, null))
+                        .commit();
+                break;
+        }
+        onSectionAttached(position);
+    }
+
+    private void chooseCollege() {
+        ncuCourseClient.getColleges(new ResponseListener<College[]>() {
+            @Override
+            public void onResponse(final College[] responses) {
+                String[] collegeNames = new String[responses.length];
+                for (int i = 0; i != responses.length; ++i)
+                    collegeNames[i] = responses[i].getName();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(position == 1 ? R.string.title_by_depart : R.string.title_by_taker)
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mNavigationDrawerFragment.selectItem(0);
+                            }
+                        })
+                        .setItems(collegeNames, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                chooseDepart(responses[which]);
+                            }
+                        }).show();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+        });
+    }
+
+    private void chooseDepart(final College college) {
+        ncuCourseClient.getCollegeDepartments(college.getId(), new ResponseListener<Department[]>() {
+            @Override
+            public void onResponse(final Department[] responses) {
+                String[] departNames = new String[responses.length];
+                for (int i = 0; i != responses.length; ++i)
+                    departNames[i] = responses[i].getName();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(college.getName())
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mNavigationDrawerFragment.selectItem(0);
+                            }
+                        })
+                        .setItems(departNames, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (position == 1)
+                                    showCourses(0, responses[which]);
+                                else
+                                    chooseTarget(responses[which]);
+                            }
+                        }).show();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+        });
+    }
+
+    private void chooseTarget(final Department department) {
+        ncuCourseClient.getDepartmentTargets(department.getId(), new ResponseListener<Target[]>() {
+            @Override
+            public void onResponse(final Target[] responses) {
+                String[] targetNames = new String[responses.length];
+                for (int i = 0; i != responses.length; ++i)
+                    targetNames[i] = responses[i].getName();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle(department.getName())
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mNavigationDrawerFragment.selectItem(0);
+                            }
+                        })
+                        .setItems(targetNames, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                showCourses(1, responses[which]);
+                            }
+                        }).show();
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+        });
+    }
+
+    public void showCourses(int type , Unit unit) {
+        mTitle = unit.getName();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, CoursesFragment.newInstance(type, unit.getId()))
                 .commit();
+        restoreActionBar();
     }
 
     public void onSectionAttached(int number) {
         switch (number) {
-            case 1:
+            case 0:
                 mTitle = getString(R.string.title_my_course);
                 break;
+            case 1:
+                mTitle = getString(R.string.title_by_depart);
+                break;
+            case 2:
+                mTitle = getString(R.string.title_by_taker);
+                break;
+            case 3:
+                mTitle = getString(R.string.title_rejected);
         }
     }
 
@@ -145,14 +278,25 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
-            ncuCourseClient.deleteAccessToken();
-            auth = false;
-            new AuthTask().execute();
-            return true;
+        switch (id) {
+            case R.id.action_logout:
+                ncuCourseClient.deleteAccessToken();
+                auth = false;
+                new AuthTask().execute();
+                return true;
+            case R.id.action_about:
+                showAbout();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showAbout() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.about)
+                .setView(R.layout.about)
+                .show();
     }
 
     private class AuthTask extends AsyncTask<Void, Void, Void> {

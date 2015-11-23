@@ -17,7 +17,7 @@ public class CourseActivity extends AppCompatActivity {
     private final String[] hourFW = {
             "１","２","３","４","Ｚ","５","６","７","８","９","Ａ","Ｂ","Ｃ","Ｄ","Ｅ","Ｆ"
     };
-    private Course course;
+    public static Course course;
     private GestureDetector gestureDetector;
 
     @Override
@@ -27,7 +27,6 @@ public class CourseActivity extends AppCompatActivity {
 
         dayFW = new String[]{getString(R.string.title_monday), getString(R.string.title_tuesday), getString(R.string.title_wednesday), getString(R.string.title_thursday), getString(R.string.title_friday), getString(R.string.title_saturday), getString(R.string.title_sunday)};
         setContentView(R.layout.activity_course);
-        course = ScheduleFragment.course;
 
         TextView noClassNoText = (TextView) findViewById(R.id.code_class);
         TextView classNameText = (TextView) findViewById(R.id.course_name);

@@ -101,7 +101,9 @@ public class NavigationDrawerFragment extends Fragment {
                 getActionBar().getThemedContext(),
                 new String[]{
                         getString(R.string.title_my_course),
-                        getString(R.string.title_version)
+                        getString(R.string.title_by_depart),
+                        getString(R.string.title_by_taker),
+                        getString(R.string.title_rejected)
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -181,8 +183,6 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     public void selectItem(int position) {
-        if (position == 1)
-            return;
         mCurrentSelectedPosition = position;
         if (mDrawerListView != null) {
             mDrawerListView.setItemChecked(position, true);
@@ -294,7 +294,8 @@ public class NavigationDrawerFragment extends Fragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView textView;
-            convertView = LayoutInflater.from(context).inflate(R.layout.navigation_list_item, parent, false);
+            if (convertView == null)
+                convertView = LayoutInflater.from(context).inflate(R.layout.navigation_list_item, parent, false);
             textView = (TextView) convertView;
             textView.setText(items[position]);
             return convertView;

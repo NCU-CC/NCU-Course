@@ -5,7 +5,9 @@
 
     <string name="app_name">中大我的課表</string>
     <string name="title_my_course">我的課表</string>
-    <string name="title_version">版本 0.5</string>
+    <string name="title_by_depart">依系所查詢</string>
+    <string name="title_by_taker">依授課對象查詢</string>
+    <string name="title_rejected">未中選課程</string>
     <string name="action_logout">登出</string>
     <string name="cancel">取消</string>
     <string name="language">zh-TW</string>
@@ -16,6 +18,7 @@
     <string name="title_friday">週五</string>
     <string name="title_saturday">週六</string>
     <string name="title_sunday">週日</string>
+    <string name="no_course">查無課程</string>
     <string name="title_activity_course">課程內容</string>
     <string name="code_class">課號-班別</string>
     <string name="course_name">課程名稱</string>
@@ -31,7 +34,7 @@
     <string name="network_unreachable">無法連線</string>
     <string name="open_network_message">您必須要有網路連線，才能使用中大我的課表，請至設定中開啟行動網路或是Wi-Fi。</string>
     <string name="network_settings">設定</string>
-    <string name="loading_schedule">正在載入課表</string>
     <string name="loading_failed">讀取失敗</string>
+    <string name="about">關於</string>
 
 </resources>
