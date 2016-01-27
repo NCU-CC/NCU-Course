@@ -93,9 +93,9 @@ public class MainActivity extends AppCompatActivity
         else {
             CourseConfig courseConfig = new CourseConfig("https://api.cc.ncu.edu.tw/course/v1/", getString(R.string.language));
             AndroidOauthBuilder oauthBuilder = AndroidOauthBuilder.initContext(this)
-                    .clientID(getString(R.string.oauth_id))
-                    .clientSecret(getString(R.string.oauth_secret))
-                    .callback(getString(R.string.callback))
+                    .clientID(getString(R.string.NCU_OAuth_Client_ID))
+                    .clientSecret(getString(R.string.NCU_OAuth_Client_Secret))
+                    .callback(getString(R.string.NCU_OAuth_Call_Back))
                     .scope("course.schedule.read")
                     .fragmentManager(getSupportFragmentManager());
             OAuthManager oAuthManager = oauthBuilder.build();

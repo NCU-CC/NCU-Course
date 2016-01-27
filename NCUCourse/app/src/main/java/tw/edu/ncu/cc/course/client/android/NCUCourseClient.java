@@ -1,7 +1,6 @@
 package tw.edu.ncu.cc.course.client.android;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
@@ -37,7 +36,7 @@ public class NCUCourseClient {
         this.language = config.getLanguage();
         this.queue = Volley.newRequestQueue( context );
         this.oauthManager = oauthManager;
-        this.apiToken = context.getString(R.string.oauth_api_token);
+        this.apiToken = context.getString(R.string.NCU_OAuth_API_Token);
     }
 
     public void initAccessToken() {

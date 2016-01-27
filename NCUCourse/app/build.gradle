@@ -1,14 +1,18 @@
 apply plugin: 'com.android.application'
 
+if (project.hasProperty("MyProject.signing") && new File(project.property("MyProject.signing") + ".gradle").exists()) {
+    apply from: project.property("MyProject.signing") + ".gradle";
+}
+
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
 
     defaultConfig {
         applicationId "tw.edu.ncu.cc.ncucourse"
         minSdkVersion 15
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 7
         versionName "0.6"
     }
@@ -17,6 +21,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -29,6 +36,6 @@ dependencies {
     }
     compile 'com.github.johnkil.android-progressfragment:progressfragment:1.4.0'
     compile 'com.mcxiaoke.volley:library:1.0.18'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.android.support:appcompat-v7:22.2.1'
 }
